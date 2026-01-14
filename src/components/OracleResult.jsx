@@ -13,7 +13,7 @@ const OracleResult = ({ image }) => {
     };
 
     return (
-        <div className="flex flex-col items-center w-full animate-fade-in" style={{ justifyContent: 'flex-start', paddingTop: '2rem' }}>
+        <div className="flex flex-col items-center w-full max-w-md mx-auto animate-fade-in pb-24 padding-top-safe px-4" style={{ justifyContent: 'flex-start', paddingTop: '2rem' }}>
 
             <div className="text-center mb-8">
                 <h2 style={{ fontSize: '2rem', color: '#D4AF37', marginBottom: '0.5rem' }}>Soulmate Found</h2>
@@ -21,21 +21,14 @@ const OracleResult = ({ image }) => {
             </div>
 
             {/* Soulmate Image - Locked/Unlocked */}
-            <div style={{
-                position: 'relative',
-                width: '280px', height: '350px',
-                marginBottom: '2rem',
-                borderRadius: '16px', overflow: 'hidden',
-                border: '1px solid rgba(255,255,255,0.2)',
-                boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
-            }}>
+            <div className="relative mb-8 rounded-2xl overflow-hidden border border-white/20 shadow-2xl w-full max-w-[280px] mx-auto"
+                style={{ aspectRatio: '4/5' }}>
                 <img
                     src={image || soulmateImg}
                     alt="Soulmate"
+                    className="w-full h-full object-cover transition-all duration-1000"
                     style={{
-                        width: '100%', height: '100%', objectFit: 'cover',
                         filter: isUnlocked ? 'none' : 'blur(15px) brightness(0.7)',
-                        transition: 'all 1s'
                     }}
                 />
 
@@ -141,7 +134,7 @@ const OracleResult = ({ image }) => {
                     </p>
                 </div>
             ) : (
-                <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '2rem' }}>
+                <div className="flex justify-center w-full mt-8 mb-12">
                     <button
                         onClick={async () => {
                             const shareData = {
@@ -160,8 +153,7 @@ const OracleResult = ({ image }) => {
                                 console.error('Share failed:', err);
                             }
                         }}
-                        className="btn-cosmic"
-                        style={{ margin: '0 auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                        className="btn-cosmic flex items-center gap-2 mx-auto"
                     >
                         <span>Share Result</span> 📤
                     </button>
