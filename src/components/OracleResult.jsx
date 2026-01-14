@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import soulmateImg from '../assets/soulmate.png'; // Make sure this path is correct
+import soulmateImg from '../assets/soulmate.png';
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const OracleResult = ({ image }) => {
     const [isUnlocked, setIsUnlocked] = useState(false);
@@ -94,19 +95,60 @@ const OracleResult = ({ image }) => {
             </div>
 
             {/* CTA / Unlock */}
+            {/* CTA / Unlock */}
             {!isUnlocked ? (
-                <div style={{ width: '100%', textAlign: 'center' }}>
-                    <button
-                        onClick={handleUnlock}
-                        className="btn-cosmic"
-                        style={{ width: '100%', maxWidth: '300px' }}
-                    >
-                        Reveal For $9.99
-                    </button>
+                <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
+                    <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID || "test" }}>
+                        <PayPalButtons
+                            style={{ layout: "vertical", color: "gold", shape: "pill", label: "pay" }}
+                            createOrder={(data, actions) => {
+                                return actions.order.create({
+                                    purchase_units: [{
+                                        amount: { value: "9.99" },
+                                        description: "Auralume Soulmate Unlock"
+                                    }],
+                                });
+                            }}
+                            onApprove={async (data, actions) => {
+                                const details = await actions.order.capture();
+                                console.log("Payment Successful:", details);
+                                setIsUnlocked(true);
+                            }}
+                            onError={(err) => {
+                                console.error("PayPal Error:", err);
+                                alert("Payment failed. Please try again.");
+                            }}
+                        />
+                    </PayPalScriptProvider>
+                    <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)', marginTop: '0.5rem' }}>
+                        Secured by PayPal. One-time payment.
+                    </p>
                 </div>
             ) : (
-                <div style={{ display: 'flex', gap: '1rem' }}>
-                    <button className="btn-cosmic">Share Result</button>
+                <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '2rem' }}>
+                    <button
+                        onClick={async () => {
+                            const shareData = {
+                                title: 'Auralume Soulmate Result',
+                                text: 'I just discovered my cosmic soulmate signature on Auralume. ✨',
+                                url: window.location.href
+                            };
+                            try {
+                                if (navigator.share) {
+                                    await navigator.share(shareData);
+                                } else {
+                                    await navigator.clipboard.writeText(window.location.href);
+                                    alert('Link copied to clipboard!');
+                                }
+                            } catch (err) {
+                                console.error('Share failed:', err);
+                            }
+                        }}
+                        className="btn-cosmic"
+                        style={{ margin: '0 auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                    >
+                        <span>Share Result</span> 📤
+                    </button>
                 </div>
             )}
 
