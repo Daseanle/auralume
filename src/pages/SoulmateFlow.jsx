@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import Hero from '../components/Hero';
+import HandScanner from '../components/HandScanner'; // Fixed: Missing import
 import BirthChartForm from '../components/BirthChartForm';
 import RitualProcessor from '../components/RitualProcessor';
 import OracleResult from '../components/OracleResult';
 
-import { generateSoulmateReading } from '../lib/gemini'; // NEW
+import { generateSoulmateReading } from '../lib/gemini';
+import { generateSoulmateImage } from '../lib/image-gen'; // Fixed: Missing import
 
 const SoulmateFlow = () => {
     const [step, setStep] = useState('hero'); // hero, scan, form, processing, result
