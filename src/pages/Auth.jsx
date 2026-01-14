@@ -28,6 +28,17 @@ const Auth = () => {
                 localStorage.setItem('aura_session', 'mock_token');
             }
             navigate('/'); // Go to Dashboard on success
+
+            // SYNC GUEST UNLOCK TO ACCOUNT
+            const guestUnlocked = localStorage.getItem('aura_unlocked_guest') === 'true';
+            if (guestUnlocked && isBackendConnected()) {
+                // Background sync - don't await/block navigation
+                supabase.auth.updateUser({
+                    data: { has_paid_oracle: true }
+                }).then(() => {
+                    console.log('✦ Synced guest purchase to account');
+                }).catch(err => console.error('Sync failed', err));
+            }
         } catch (err) {
             setError(err.message);
         } finally {

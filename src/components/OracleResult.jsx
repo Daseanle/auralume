@@ -15,7 +15,10 @@ import soulmateImg from '../assets/soulmate.png';
 const ORACLE_PRICE_ID = import.meta.env.VITE_PADDLE_ORACLE_PRICE_ID || '';
 
 const OracleResult = ({ image }) => {
-    const [isUnlocked, setIsUnlocked] = useState(false);
+    const [isUnlocked, setIsUnlocked] = useState(() => {
+        // Check local storage for guest unlock
+        return localStorage.getItem('aura_unlocked_guest') === 'true';
+    });
     const [loading, setLoading] = useState(false);
 
     /**
@@ -29,6 +32,7 @@ const OracleResult = ({ image }) => {
                 const confirmUnlock = window.confirm("Dev Mode: Simulate $9.99 Payment Success?");
                 if (confirmUnlock) {
                     setIsUnlocked(true);
+                    localStorage.setItem('aura_unlocked_guest', 'true'); // Persist for guest
                 }
                 return;
             }
@@ -37,12 +41,17 @@ const OracleResult = ({ image }) => {
             return;
         }
 
-        // 获取用户信息
+        // 获取用户信息 (Optional now)
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) {
-            alert('Please log in to unlock.');
-            return;
+
+        // Check if user has already paid (via Metadata)
+        if (user?.user_metadata?.has_paid_oracle) {
+            setIsUnlocked(true);
+            return; // Already unlocked
         }
+
+        // We allow guest checkout now!
+        // if (!user) { ... } Removed strict check
 
         setLoading(true);
 
@@ -51,14 +60,23 @@ const OracleResult = ({ image }) => {
             const { openOnetimeCheckout } = await import('../lib/paddle');
 
             openOnetimeCheckout(ORACLE_PRICE_ID, {
-                customerEmail: user.email,
-                userId: user.id,
-                onSuccess: (data) => {
+                customerEmail: user?.email || '', // If guest, Paddle will ask for email
+                userId: user?.id || 'guest',      // Mark as guest
+                onSuccess: async (data) => {
                     console.log('✦ Payment successful:', data);
-                    // 注意：实际状态更新由 Webhook 处理
-                    // 这里立即解锁以提升用户体验
+                    // 立即解锁
                     setIsUnlocked(true);
                     setLoading(false);
+
+                    // SAVE STATE LOCALLY FOR GUEST REFRESH
+                    localStorage.setItem('aura_unlocked_guest', 'true');
+
+                    // SYNC TO ACCOUNT IF LOGGED IN
+                    if (user) {
+                        await supabase.auth.updateUser({
+                            data: { has_paid_oracle: true }
+                        });
+                    }
                 },
                 onClose: () => {
                     setLoading(false);
