@@ -1,5 +1,3 @@
-import React from 'react';
-
 import React, { useState } from 'react';
 import { Sparkles, RefreshCcw } from 'lucide-react';
 import { generateTarotReading } from '../lib/gemini';
