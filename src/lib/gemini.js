@@ -124,3 +124,50 @@ export const generateSoulmateReading = async (userData) => {
         };
     }
 };
+
+export const generateTarotReading = async (cards, question = "General Guidance") => {
+    if (!GEMINI_API_KEY) {
+        return "The mists are too thick to see clearly (API Key Missing). These cards represent your past, present, and future.";
+    }
+
+    const cardNames = cards.map(c => c.name).join(", ");
+
+    // Expert Tarot Prompt
+    const prompt = `
+    [ROLE]:
+    You are an ancient Tarot Reader with centuries of wisdom. 
+    
+    [TASK]:
+    Interpret the following 3-card spread for the user.
+    The cards drawn are: ${cardNames}
+    
+    [CONTEXT]:
+    User's Intent/Question: "${question}" (If generic, give a general daily reading).
+    
+    [OUTPUT FORMAT]:
+    Return a concise but profound Markdown response.
+    - **Vibe**: 1 word summary.
+    - **The Spread**: Briefly explain how these 3 cards interact.
+    - **Guidance**: One actionable piece of advice.
+    
+    Keep it under 150 words. Mystical tone.
+    `;
+
+    try {
+        const response = await fetch(`${API_URL}?key=${GEMINI_API_KEY}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
+            })
+        });
+
+        const data = await response.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        return text || "The cards are silent.";
+
+    } catch (error) {
+        console.error("Gemini Tarot Error:", error);
+        return "The energies are turbulent. I cannot interpret the cards right now.";
+    }
+};
