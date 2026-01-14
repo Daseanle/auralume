@@ -32,7 +32,7 @@ const Privacy = () => {
 
                     <section>
                         <h2 className="text-xl text-white font-bold mb-3">3. Data Sharing</h2>
-                        <p>We do not sell your personal birth data. We may share payment data with our payment processor (PayPal) solely to complete transactions.</p>
+                        <p>We do not sell your personal birth data. We may share payment data with our authorized payment processors (e.g., Paddle, PayPal) solely as required to complete transactions and prevent fraud.</p>
                     </section>
 
                     <section>

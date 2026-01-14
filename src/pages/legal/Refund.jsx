@@ -19,11 +19,13 @@ const Refund = () => {
                     </section>
 
                     <section>
-                        <h2 className="text-xl text-white font-bold mb-3">Exceptions</h2>
-                        <p>We may offer a full refund or replacement under the following circumstances:</p>
-                        <ul className="list-disc pl-5 space-y-1">
-                            <li>**Technical Error**: If a system failure prevented you from receiving your report.</li>
+                        <h2 className="text-xl text-white font-bold mb-3">Exceptions & Satisfaction</h2>
+                        <p>We stand by the quality of our cosmic insights. We may offer a full refund or replacement under the following circumstances:</p>
+                        <ul className="list-disc pl-5 space-y-1 mt-2">
+                            <li>**Technical Defect**: If the file is corrupted, blank, or technically inaccessible.</li>
+                            <li>**Non-Delivery**: If you did not receive the report after payment confirmation.</li>
                             <li>**Duplicate Charge**: If you were accidentally charged twice for the same transaction.</li>
+                            <li>**Satisfaction Guarantee**: If you are completely unsatisfied with the quality of the generated art within 24 hours of purchase, please contact us for a review.</li>
                         </ul>
                     </section>
 

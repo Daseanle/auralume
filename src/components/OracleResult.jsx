@@ -1,14 +1,74 @@
-import React, { useState } from 'react';
+/**
+ * OracleResult - Oracle 解锁结果展示
+ *
+ * 显示灵魂伴侣匹配结果，并提供一次性付费解锁功能
+ * 使用 Paddle.js 处理支付流程
+ *
+ * @component
+ */
+
+import { useState } from 'react';
+import { supabase } from '../lib/supabase';
 import soulmateImg from '../assets/soulmate.png';
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
+// 从环境变量获取 Price ID
+const ORACLE_PRICE_ID = import.meta.env.VITE_PADDLE_ORACLE_PRICE_ID || '';
 
 const OracleResult = ({ image }) => {
     const [isUnlocked, setIsUnlocked] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const handleUnlock = () => {
-        const confirmUnlock = window.confirm("Simulate $9.99 Payment Success?");
-        if (confirmUnlock) {
-            setIsUnlocked(true);
+    /**
+     * 处理解锁按钮点击
+     */
+    const handleUnlock = async () => {
+        // 检查是否配置了 Paddle
+        if (!ORACLE_PRICE_ID) {
+            // 开发模式：模拟支付
+            if (window.location.search.includes('demo=true') || import.meta.env.DEV) {
+                const confirmUnlock = window.confirm("Dev Mode: Simulate $9.99 Payment Success?");
+                if (confirmUnlock) {
+                    setIsUnlocked(true);
+                }
+                return;
+            }
+
+            alert('Payment system is not configured. Please contact support.');
+            return;
+        }
+
+        // 获取用户信息
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+            alert('Please log in to unlock.');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            // 动态导入 Paddle
+            const { openOnetimeCheckout } = await import('../lib/paddle');
+
+            openOnetimeCheckout(ORACLE_PRICE_ID, {
+                customerEmail: user.email,
+                userId: user.id,
+                onSuccess: (data) => {
+                    console.log('✦ Payment successful:', data);
+                    // 注意：实际状态更新由 Webhook 处理
+                    // 这里立即解锁以提升用户体验
+                    setIsUnlocked(true);
+                    setLoading(false);
+                },
+                onClose: () => {
+                    setLoading(false);
+                },
+            });
+
+        } catch (error) {
+            console.error('✗ Payment failed:', error);
+            alert('Failed to open payment page. Please try again.');
+            setLoading(false);
         }
     };
 
@@ -63,7 +123,7 @@ const OracleResult = ({ image }) => {
                                 <strong>Warning:</strong> They take time to open up. Be patient.
                             </p>
 
-                            {/* NEW: Branding / Jewelry Seed */}
+                            {/* Branding / Jewelry Seed */}
                             <div className="bg-gradient-to-r from-blue-900/40 to-cyan-900/40 p-4 rounded-lg border border-cyan-500/20">
                                 <h4 className="text-sm font-serif text-cyan-200 mb-2 uppercase tracking-widest">Energy Stabilizer</h4>
                                 <p className="text-xs text-white/70 mb-3">
@@ -88,36 +148,10 @@ const OracleResult = ({ image }) => {
             </div>
 
             {/* CTA / Unlock */}
-            {/* CTA / Unlock */}
             {!isUnlocked ? (
                 <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
-
-                    {(import.meta.env.VITE_PAYPAL_CLIENT_ID && import.meta.env.VITE_PAYPAL_CLIENT_ID !== "test" && !window.location.search.includes("demo=true")) ? (
-                        /* REAL PAYPAL MODE */
-                        <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID }}>
-                            <PayPalButtons
-                                style={{ layout: "vertical", color: "gold", shape: "pill", label: "pay" }}
-                                createOrder={(data, actions) => {
-                                    return actions.order.create({
-                                        purchase_units: [{
-                                            amount: { value: "9.99" },
-                                            description: "Auralume Soulmate Unlock"
-                                        }],
-                                    });
-                                }}
-                                onApprove={async (data, actions) => {
-                                    const details = await actions.order.capture();
-                                    console.log("Payment Successful:", details);
-                                    setIsUnlocked(true);
-                                }}
-                                onError={(err) => {
-                                    console.error("PayPal Error:", err);
-                                    alert("Gateway Error: Check Vercel Environment Variables. " + JSON.stringify(err.message));
-                                }}
-                            />
-                        </PayPalScriptProvider>
-                    ) : (
-                        /* DEV / MOCK MODE (Fallback if no key is set) */
+                    {!ORACLE_PRICE_ID && !window.location.search.includes('demo=true') ? (
+                        /* 开发环境提示 */
                         <div className="flex flex-col gap-2">
                             <div className="text-[10px] text-yellow-500/50 uppercase tracking-widest mb-1">Dev Environment Detected</div>
                             <button
@@ -127,10 +161,35 @@ const OracleResult = ({ image }) => {
                                 Simulate Pay $9.99
                             </button>
                         </div>
+                    ) : (
+                        /* 生产环境 - Paddle 支付 */
+                        <div className="flex flex-col gap-3">
+                            <button
+                                onClick={handleUnlock}
+                                disabled={loading}
+                                className="btn-cosmic w-full disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {loading ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <span className="animate-spin">⏳</span>
+                                        Processing...
+                                    </span>
+                                ) : (
+                                    `Unlock Full Reading - $9.99`
+                                )}
+                            </button>
+
+                            {/* 信任标记 */}
+                            <div className="flex items-center justify-center gap-3 text-[10px] text-white/40">
+                                <span>🔒 Secure Checkout</span>
+                                <span>•</span>
+                                <span>One-time Payment</span>
+                            </div>
+                        </div>
                     )}
 
                     <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)', marginTop: '0.5rem' }}>
-                        Secured by PayPal. One-time payment.
+                        Secured by Paddle. Instant access after payment.
                     </p>
                 </div>
             ) : (

@@ -15,10 +15,9 @@ const Terms = () => {
                 <div className="space-y-6 text-sm leading-relaxed">
                     <p>Last updated: January 13, 2026</p>
 
-                    <section>
-                        <h2 className="text-xl text-white font-bold mb-3">1. Introduction</h2>
-                        <p>Welcome to Auralume ("Company", "we", "our", "us"). By accessing or using our website and services, you agree to be bound by these Terms of Service.</p>
-                    </section>
+                    <h2 className="text-xl text-white font-bold mb-3">1. Introduction</h2>
+                    <p>Welcome to Auralume ("Company", "we", "our", "us"). By accessing or using our website and services, you agree to be bound by these Terms of Service.</p>
+                    <p className="mt-2 text-white/60 text-xs">Auralume uses third-party Merchants of Record (e.g., Paddle) to handle payments and billing. By purchasing, you also agree to their respective checkout terms.</p>
 
                     <section>
                         <h2 className="text-xl text-white font-bold mb-3">2. Services</h2>
