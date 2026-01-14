@@ -12,7 +12,11 @@ const Chat = lazy(() => import('./pages/Chat'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Auth = lazy(() => import('./pages/Auth'));
 const PublicHoroscope = lazy(() => import('./pages/public/PublicHoroscope'));
-const Compatibility = lazy(() => import('./pages/public/Compatibility')); // Fixed Path
+const Compatibility = lazy(() => import('./pages/public/Compatibility'));
+const Pricing = lazy(() => import('./pages/legal/Pricing'));
+const Terms = lazy(() => import('./pages/legal/Terms'));
+const Privacy = lazy(() => import('./pages/legal/Privacy'));
+const Refund = lazy(() => import('./pages/legal/Refund'));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-black flex items-center justify-center text-gold">
@@ -28,6 +32,13 @@ function App() {
           <Route path="/auth" element={<Auth />} />
           <Route path="/horoscope" element={<PublicHoroscope />} />
           <Route path="/match/:signs" element={<Compatibility />} />
+
+          {/* Legal / Compliance Pages (Public) */}
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/refund" element={<Refund />} />
+
 
           <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
             <Route path="/" element={<Dashboard />} />
