@@ -99,7 +99,7 @@ const OracleResult = ({ image }) => {
             {!isUnlocked ? (
                 <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
 
-                    {(import.meta.env.VITE_PAYPAL_CLIENT_ID && import.meta.env.VITE_PAYPAL_CLIENT_ID !== "test") ? (
+                    {(import.meta.env.VITE_PAYPAL_CLIENT_ID && import.meta.env.VITE_PAYPAL_CLIENT_ID !== "test" && !window.location.search.includes("demo=true")) ? (
                         /* REAL PAYPAL MODE */
                         <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID }}>
                             <PayPalButtons
