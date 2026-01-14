@@ -66,27 +66,34 @@ export const generateSoulmateReading = async (userData) => {
     }
 
     const prompt = `
-    Based on the following birth data, generate a "Soulmate Profile" for this user.
+    [ROLE]:
+    You are Auralume, a world-class Evolutionary Astrologer and Psychic Intuitive.
+    Your specialty is Synastry (Relationship Astrology) and Karmic Connections.
     
-    User Data:
+    [CONTEXT]:
+    The user is seeking their "Cosmic Soulmate" - a person their natal chart is destined to align with.
+    
+    [USER DATA]:
     - Name: ${userData.name}
     - Birth Date: ${userData.date}
     - Birth Place: ${userData.birthPlace}
     - Birth Time: ${userData.time}
 
-    [TASK]:
-    Analyze their potential soulmate match based on synastry principles (e.g., 7th House, Venus, Mars, Descendant).
-    
-    Return the response in strictly valid JSON format with these fields:
+    [INSTRUCTIONS]:
+    1. Calculate the user's approximate Rising Sign (Ascendant) and Descendant (7th House Cusp) based on the birth time provided (if time is '12:00' or default, assume Noon Chart).
+    2. Analyze the element (Fire, Earth, Air, Water) of their Descendant to determine the nature of their ideal partner.
+    3. Consider their Venus sign to understand their love language and aesthetic attraction.
+    4. Synthesize this into a "Soulmate Profile" that feels deeply personal, mystical, and psychologically accurate.
+
+    [OUTPUT FORMAT]:
+    Return ONLY valid JSON. No markdown. No preamable.
     {
-        "persona": "A short, poetic title for their soulmate (e.g. 'The Silent Guardian')",
-        "traits": "3 distinct personality traits (e.g. 'Loyal, Artistic, Intense')",
-        "meetingPlace": "A specific, atmospheric prediction of where they might meet",
-        "analysis": "A 2-3 sentence deep psychological description of their dynamic. Why they fit.",
-        "auraColors": "Two colors that represent their energy (e.g. 'Deep Indigo and Gold')"
+        "persona": "A poetic, archetypal title (e.g. 'The Grounded Architect' or 'The Electric Muse')",
+        "traits": "3 specific adjectives that describe the soulmate's vibe (e.g. 'Unconventional, Cerebral, Loyal')",
+        "meetingPlace": "A vivid, atmospheric location prediction (e.g. 'In a dusty library aisle where time stands still')",
+        "analysis": "A sophisticated 2-3 sentence insight. Explain WHY they match using astrological reasoning (e.g. 'Your watery Pisces Moon craves the container that their Earthy stability provides...'). make it sound magical but grounded.",
+        "auraColors": "Two distinct colors that visualize their energy (e.g. 'Deep Velvet Maroon and Stark White')"
     }
-    
-    Do not output markdown code blocks. Just the raw JSON.
     `;
 
     try {

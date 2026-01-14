@@ -8,7 +8,7 @@
 export const generateSoulmateImage = (prompt) => {
     // Brand Pivot: "Abstract Aura Art" instead of faces.
     // We want ethereal, gradient, light-leak style images.
-    const enhancedPrompt = `abstract aura art, ethereal light leaks, cosmic energy gradients, spiritual minimalist wallpaper, 8k resolution, glowing ${prompt} vibes, no human faces`;
+    const enhancedPrompt = `abstract aura art, James Turrell style lighting, Mark Rothko color fields, ethereal bioluminescent gradients, spiritual minimalist wallpaper, 8k resolution, cinematic lighting, glowing ${prompt} energy, dreamcore, no human faces, no text`;
 
     // Encode for URL
     const encoded = encodeURIComponent(enhancedPrompt);
