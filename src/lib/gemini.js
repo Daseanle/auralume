@@ -54,3 +54,66 @@ export const getGeminiResponse = async (userMessage, history = []) => {
         return "I cannot read the sky right now. Please try again later.";
     }
 };
+
+export const generateSoulmateReading = async (userData) => {
+    if (!GEMINI_API_KEY) {
+        return {
+            persona: "The Cosmic Mystery",
+            traits: "Unknown, Ethereal, Distant",
+            meetingPlace: "In your dreams",
+            analysis: "API Key missing. Cannot read the stars uniquely."
+        };
+    }
+
+    const prompt = `
+    Based on the following birth data, generate a "Soulmate Profile" for this user.
+    
+    User Data:
+    - Name: ${userData.name}
+    - Birth Date: ${userData.date}
+    - Birth Place: ${userData.birthPlace}
+    - Birth Time: ${userData.time}
+
+    [TASK]:
+    Analyze their potential soulmate match based on synastry principles (e.g., 7th House, Venus, Mars, Descendant).
+    
+    Return the response in strictly valid JSON format with these fields:
+    {
+        "persona": "A short, poetic title for their soulmate (e.g. 'The Silent Guardian')",
+        "traits": "3 distinct personality traits (e.g. 'Loyal, Artistic, Intense')",
+        "meetingPlace": "A specific, atmospheric prediction of where they might meet",
+        "analysis": "A 2-3 sentence deep psychological description of their dynamic. Why they fit.",
+        "auraColors": "Two colors that represent their energy (e.g. 'Deep Indigo and Gold')"
+    }
+    
+    Do not output markdown code blocks. Just the raw JSON.
+    `;
+
+    try {
+        const response = await fetch(`${API_URL}?key=${GEMINI_API_KEY}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
+            })
+        });
+
+        const data = await response.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        // Clean up markdown if present (```json ... ```)
+        const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+
+        return JSON.parse(cleanText);
+
+    } catch (error) {
+        console.error("Gemini Soulmate Gen Error:", error);
+        return {
+            persona: "The Destined One",
+            traits: "Loyal, Passionate, Mysterious",
+            meetingPlace: "Where light meets shadow",
+            analysis: "Your energies align in a way that transcends time. They ground your chaos.",
+            auraColors: "Purple and Silver"
+        };
+    }
+};

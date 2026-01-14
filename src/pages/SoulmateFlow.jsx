@@ -4,14 +4,13 @@ import BirthChartForm from '../components/BirthChartForm';
 import RitualProcessor from '../components/RitualProcessor';
 import OracleResult from '../components/OracleResult';
 
-import { generateSoulmateImage } from '../lib/image-gen';
-
-import HandScanner from '../components/HandScanner'; // NEW
+import { generateSoulmateReading } from '../lib/gemini'; // NEW
 
 const SoulmateFlow = () => {
     const [step, setStep] = useState('hero'); // hero, scan, form, processing, result
     const [userData, setUserData] = useState(null);
     const [soulmateImage, setSoulmateImage] = useState(null);
+    const [readingData, setReadingData] = useState(null); // Store AI Text
 
     const handleStart = () => {
         setStep('scan'); // Go to scan first
@@ -21,18 +20,30 @@ const SoulmateFlow = () => {
         setStep('form'); // Go to form after scan
     };
 
-    const handleFormSubmit = (data) => {
+    // Triggered when user submits Birth Chart Form
+    const handleFormSubmit = async (data) => {
         setUserData(data);
+        setStep('processing'); // Show loading screen immediately
 
-        // Generate Unique Image based on inputs
-        // e.g. "Soulmate for Sarah, intense scorpio energy"
-        const prompt = `unique aura art for ${data.name || 'User'}, ${data.birthPlace || 'cosmos'} energy, spiritual light, abstract colors`;
-        const imgUrl = generateSoulmateImage(prompt);
-        setSoulmateImage(imgUrl);
+        try {
+            // 1. Generate Text Reading (Gemini)
+            const reading = await generateSoulmateReading(data);
+            setReadingData(reading);
 
-        setStep('processing');
+            // 2. Generate Image based on AI Aura Colors
+            // Fallback to "cosmos" if API fails
+            const auraPrompt = reading.auraColors || "spiritual cosmos light";
+            const imgPrompt = `abstract aura art, ${auraPrompt}, ethereal, spiritual connection with ${data.name}`;
+            const imgUrl = generateSoulmateImage(imgPrompt);
+            setSoulmateImage(imgUrl);
+
+        } catch (err) {
+            console.error("Flow Error:", err);
+            // Fallbacks handled in components
+        }
     };
 
+    // Called by RitualProcessor when animation is done (approx 6s)
     const handleProcessingComplete = () => {
         setStep('result');
     };
@@ -43,7 +54,7 @@ const SoulmateFlow = () => {
             {step === 'scan' && <HandScanner onComplete={handleScanComplete} />}
             {step === 'form' && <BirthChartForm onSubmit={handleFormSubmit} />}
             {step === 'processing' && <RitualProcessor onComplete={handleProcessingComplete} />}
-            {step === 'result' && <OracleResult image={soulmateImage} />}
+            {step === 'result' && <OracleResult image={soulmateImage} readingData={readingData} />}
         </div>
     );
 };
