@@ -17,6 +17,7 @@ const Pricing = lazy(() => import('./pages/legal/Pricing'));
 const Terms = lazy(() => import('./pages/legal/Terms'));
 const Privacy = lazy(() => import('./pages/legal/Privacy'));
 const Refund = lazy(() => import('./pages/legal/Refund'));
+const About = lazy(() => import('./pages/About'));
 
 const LoadingFallback = () => (
   <div className="min-h-screen bg-black flex items-center justify-center text-gold">
@@ -38,6 +39,7 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/refund" element={<Refund />} />
+          <Route path="/about" element={<About />} />
 
 
           <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>

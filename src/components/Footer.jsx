@@ -30,7 +30,7 @@ const Footer = () => {
             links: [
                 { to: '/pricing', label: 'Pricing' },
                 { to: '/horoscope', label: 'Daily Horoscope' },
-                { to: '/', label: 'About Us' },
+                { to: '/about', label: 'About Us' },
             ]
         },
         {
@@ -84,10 +84,9 @@ const Footer = () => {
                                             <NavLink
                                                 to={link.to}
                                                 className={({ isActive }) =>
-                                                    `text-sm transition-colors ${
-                                                        isActive
-                                                            ? 'text-gold'
-                                                            : 'text-white/50 hover:text-gold'
+                                                    `text-sm transition-colors ${isActive
+                                                        ? 'text-gold'
+                                                        : 'text-white/50 hover:text-gold'
                                                     }`
                                                 }
                                             >
