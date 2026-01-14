@@ -3,6 +3,7 @@ import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Sparkles, Moon, Heart, MessageCircle, User } from 'lucide-react';
 import bgNebula from '../assets/bg-nebula.png';
 import CosmicPlayer from './CosmicPlayer';
+import Footer from './Footer';
 
 const AppLayout = () => {
     return (
@@ -21,6 +22,7 @@ const AppLayout = () => {
             {/* Added padding-bottom to avoid content being hidden behind bottom nav */}
             <div className="flex-1 pb-24 overflow-y-auto flex flex-col">
                 <Outlet />
+                <Footer />
             </div>
 
             {/* BOTTOM NAVIGATION */}
