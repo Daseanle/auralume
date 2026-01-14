@@ -8,18 +8,18 @@
  * - VITE_ENABLE_PADDLE_SANDBOX: 设置为 'true' 启用沙盒模式（测试用）
  */
 
-import { Paddle } from '@paddle/paddle-js';
+import { initializePaddle as initPaddle } from '@paddle/paddle-js';
 
-let paddleInitialized = false;
+let paddleInstance = null;
 
 /**
  * 初始化 Paddle SDK
  * 应该在应用启动时调用一次
  */
 export const initializePaddle = async () => {
-  if (paddleInitialized) {
+  if (paddleInstance) {
     console.log('✦ Paddle already initialized');
-    return Paddle;
+    return paddleInstance;
   }
 
   try {
@@ -30,7 +30,7 @@ export const initializePaddle = async () => {
       return null;
     }
 
-    await Paddle.initialize({
+    paddleInstance = await initPaddle({
       token: token,
       // 传入客户信息（如果用户已登录）
       pwCustomer: {
@@ -57,9 +57,8 @@ export const initializePaddle = async () => {
       },
     });
 
-    paddleInitialized = true;
     console.log('✦ Paddle initialized successfully');
-    return Paddle;
+    return paddleInstance;
 
   } catch (error) {
     console.error('✗ Paddle initialization failed:', error);
@@ -85,14 +84,14 @@ export const openSubscriptionCheckout = (priceId, options = {}) => {
     onClose,
   } = options;
 
-  if (!paddleInitialized) {
+  if (!paddleInstance) {
     console.error('✗ Paddle not initialized');
     alert('Payment system is not ready. Please refresh the page.');
     return;
   }
 
   try {
-    Paddle.Checkout.open({
+    paddleInstance.Checkout.open({
       settings: {
         displayMode: 'overlay', // 'overlay' | 'redirect'
         theme: 'dark', // 'light' | 'dark'
@@ -142,14 +141,14 @@ export const openOnetimeCheckout = (priceId, options = {}) => {
     onClose,
   } = options;
 
-  if (!paddleInitialized) {
+  if (!paddleInstance) {
     console.error('✗ Paddle not initialized');
     alert('Payment system is not ready. Please refresh the page.');
     return;
   }
 
   try {
-    Paddle.Checkout.open({
+    paddleInstance.Checkout.open({
       settings: {
         displayMode: 'overlay',
         theme: 'dark',
@@ -217,9 +216,9 @@ export const formatPrice = (price) => {
 /**
  * 导出 Paddle 实例（用于高级用法）
  */
-export { Paddle };
+export const getPaddleInstance = () => paddleInstance;
 
 /**
  * 检查 Paddle 是否已初始化
  */
-export const isPaddleReady = () => paddleInitialized;
+export const isPaddleReady = () => !!paddleInstance;
