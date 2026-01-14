@@ -66,8 +66,7 @@ const Pricing = () => {
                     </div>
                 </div>
 
-n
-            <Footer />
+                <Footer />
             </div>
         </div>
     );
