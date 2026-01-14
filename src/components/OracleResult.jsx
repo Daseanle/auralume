@@ -13,7 +13,7 @@ const OracleResult = ({ image }) => {
     };
 
     return (
-        <div className="center-col animate-fade-in" style={{ justifyContent: 'flex-start', paddingTop: '2rem' }}>
+        <div className="flex flex-col items-center w-full animate-fade-in" style={{ justifyContent: 'flex-start', paddingTop: '2rem' }}>
 
             <div className="text-center mb-8">
                 <h2 style={{ fontSize: '2rem', color: '#D4AF37', marginBottom: '0.5rem' }}>Soulmate Found</h2>
@@ -98,28 +98,44 @@ const OracleResult = ({ image }) => {
             {/* CTA / Unlock */}
             {!isUnlocked ? (
                 <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
-                    <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID || "test" }}>
-                        <PayPalButtons
-                            style={{ layout: "vertical", color: "gold", shape: "pill", label: "pay" }}
-                            createOrder={(data, actions) => {
-                                return actions.order.create({
-                                    purchase_units: [{
-                                        amount: { value: "9.99" },
-                                        description: "Auralume Soulmate Unlock"
-                                    }],
-                                });
-                            }}
-                            onApprove={async (data, actions) => {
-                                const details = await actions.order.capture();
-                                console.log("Payment Successful:", details);
-                                setIsUnlocked(true);
-                            }}
-                            onError={(err) => {
-                                console.error("PayPal Error:", err);
-                                alert("Payment failed. Please try again.");
-                            }}
-                        />
-                    </PayPalScriptProvider>
+
+                    {(import.meta.env.VITE_PAYPAL_CLIENT_ID && import.meta.env.VITE_PAYPAL_CLIENT_ID !== "test") ? (
+                        /* REAL PAYPAL MODE */
+                        <PayPalScriptProvider options={{ "client-id": import.meta.env.VITE_PAYPAL_CLIENT_ID }}>
+                            <PayPalButtons
+                                style={{ layout: "vertical", color: "gold", shape: "pill", label: "pay" }}
+                                createOrder={(data, actions) => {
+                                    return actions.order.create({
+                                        purchase_units: [{
+                                            amount: { value: "9.99" },
+                                            description: "Auralume Soulmate Unlock"
+                                        }],
+                                    });
+                                }}
+                                onApprove={async (data, actions) => {
+                                    const details = await actions.order.capture();
+                                    console.log("Payment Successful:", details);
+                                    setIsUnlocked(true);
+                                }}
+                                onError={(err) => {
+                                    console.error("PayPal Error:", err);
+                                    alert("Gateway Error: Check Vercel Environment Variables. " + JSON.stringify(err.message));
+                                }}
+                            />
+                        </PayPalScriptProvider>
+                    ) : (
+                        /* DEV / MOCK MODE (Fallback if no key is set) */
+                        <div className="flex flex-col gap-2">
+                            <div className="text-[10px] text-yellow-500/50 uppercase tracking-widest mb-1">Dev Environment Detected</div>
+                            <button
+                                onClick={handleUnlock}
+                                className="btn-cosmic w-full"
+                            >
+                                Simulate Pay $9.99
+                            </button>
+                        </div>
+                    )}
+
                     <p style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)', marginTop: '0.5rem' }}>
                         Secured by PayPal. One-time payment.
                     </p>
