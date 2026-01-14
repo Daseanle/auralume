@@ -1,4 +1,5 @@
-import { Astronomy, Body } from 'astronomy-engine';
+import * as Astronomy from 'astronomy-engine';
+const { Body } = Astronomy;
 
 const BODIES = [
     { name: 'Sun', id: Body.Sun },
