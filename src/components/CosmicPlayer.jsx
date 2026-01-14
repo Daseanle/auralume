@@ -1,52 +1,108 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Volume2, VolumeX, SkipForward } from 'lucide-react';
+import { Volume2, VolumeX, SkipForward, Loader2 } from 'lucide-react';
 
+// Using more reliable, direct MP3 sources (Kevin MacLeod / Public Domain)
 const TRACKS = [
-    { name: "Deep Space 432Hz", url: "https://cdn.pixabay.com/download/audio/2022/10/25/audio_1653835075.mp3?filename=atmosphere-10-124376.mp3" },
-    { name: "Alpha Waves", url: "https://cdn.pixabay.com/download/audio/2022/03/24/audio_c8c8a73467.mp3?filename=meditation-impulse-3000.mp3" },
-    { name: "Cosmic Rain", url: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=soft-rain-ambient-111163.mp3" }
+    {
+        name: "Ethereal Space",
+        url: "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Fluidscape.mp3"
+    },
+    {
+        name: "Deep Meditation",
+        url: "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Meditation%20Impromptu%2001.mp3"
+    },
+    {
+        name: "Cosmic Drift",
+        url: "https://incompetech.com/music/royalty-free/mp3-royaltyfree/Space%201990-B.mp3"
+    }
 ];
 
 const CosmicPlayer = () => {
     const [isPlaying, setIsPlaying] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [currentTrack, setCurrentTrack] = useState(0);
     const audioRef = useRef(new Audio(TRACKS[0].url));
 
     useEffect(() => {
-        // Configure audio
-        audioRef.current.loop = true;
-        audioRef.current.volume = 0.5;
+        const audio = audioRef.current;
 
-        // Listen for "Start Ritual" event
+        // Settings
+        audio.loop = true;
+        audio.volume = 0.5;
+        audio.preload = "auto";
+
+        // Event Listeners
+        const handlePlay = () => setIsPlaying(true);
+        const handlePause = () => setIsPlaying(false);
+        const handleWaiting = () => setIsLoading(true);
+        const handlePlaying = () => setIsLoading(false);
+        const handleError = (e) => {
+            console.error("Audio Error:", e);
+            setIsLoading(false);
+            setIsPlaying(false);
+            // Auto skip to next if error
+            nextTrack();
+        };
+
+        audio.addEventListener('play', handlePlay);
+        audio.addEventListener('pause', handlePause);
+        audio.addEventListener('waiting', handleWaiting);
+        audio.addEventListener('playing', handlePlaying);
+        audio.addEventListener('error', handleError);
+
+        // Global Event for Rituals
         const handleStartAudio = () => {
-            if (audioRef.current.paused) {
-                audioRef.current.play().catch(e => console.log("Audio autoplay prevented", e));
-                setIsPlaying(true);
-            }
+            // User interaction check is handled by browser, 
+            // but if called from non-async event it might fail.
+            // We'll try.
+            audio.play().catch(console.warn);
         };
         window.addEventListener('START_COSMIC_AUDIO', handleStartAudio);
 
-        // Cleanup
         return () => {
-            audioRef.current.pause();
+            audio.removeEventListener('play', handlePlay);
+            audio.removeEventListener('pause', handlePause);
+            audio.removeEventListener('waiting', handleWaiting);
+            audio.removeEventListener('playing', handlePlaying);
+            audio.removeEventListener('error', handleError);
             window.removeEventListener('START_COSMIC_AUDIO', handleStartAudio);
+            audio.pause();
         };
     }, []);
 
+    // Handle Track Change
     useEffect(() => {
-        // Change source when track changes
-        const wasPlaying = !audioRef.current.paused;
-        audioRef.current.src = TRACKS[currentTrack].url;
-        if (wasPlaying) audioRef.current.play();
+        const audio = audioRef.current;
+        const wasPlaying = isPlaying;
+
+        setIsLoading(true);
+        audio.src = TRACKS[currentTrack].url;
+        audio.load();
+
+        if (wasPlaying) {
+            audio.play().catch(e => {
+                console.warn("Autoplay block on track change", e);
+                setIsPlaying(false);
+            });
+        }
     }, [currentTrack]);
 
     const togglePlay = () => {
         if (isPlaying) {
             audioRef.current.pause();
         } else {
-            audioRef.current.play();
+            const playPromise = audioRef.current.play();
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        // Playback started
+                    })
+                    .catch((error) => {
+                        console.error("Playback failed:", error);
+                        setIsPlaying(false);
+                    });
+            }
         }
-        setIsPlaying(!isPlaying);
     };
 
     const nextTrack = () => {
@@ -54,33 +110,61 @@ const CosmicPlayer = () => {
     };
 
     return (
-        <div className="fixed bottom-24 right-4 z-40 flex flex-col items-end gap-2 animate-fade-in">
+        <div className="fixed top-20 right-4 z-50 flex flex-col items-end gap-2 animate-fade-in pointer-events-auto">
 
-            {/* Track Info Toast (Visible only when playing) */}
-            {isPlaying && (
-                <div className="bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-[10px] text-gold tracking-widest uppercase mb-1">
-                    Now Playing: {TRACKS[currentTrack].name}
+            {/* Status Indicator */}
+            {(isPlaying || isLoading) && (
+                <div className="bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-2 mb-1">
+                    {isLoading ? (
+                        <Loader2 size={10} className="text-gold animate-spin" />
+                    ) : (
+                        <div className="flex gap-0.5 items-end h-3">
+                            <div className="w-0.5 bg-gold h-full animate-music-bar-1"></div>
+                            <div className="w-0.5 bg-gold h-2/3 animate-music-bar-2"></div>
+                            <div className="w-0.5 bg-gold h-full animate-music-bar-3"></div>
+                        </div>
+                    )}
+                    <span className="text-[10px] text-white/80 font-serif tracking-wider uppercase">
+                        {TRACKS[currentTrack].name}
+                    </span>
                 </div>
             )}
 
-            {/* Controls - Always visible now to allow manual start */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-full p-2 flex items-center gap-2 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+            {/* Controls */}
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-full p-2 pl-3 flex items-center gap-3 shadow-2xl hover:bg-white/10 transition-colors group">
+
+                {/* Visualizer / Title (Compact) */}
+                <span className="text-[10px] text-gold font-bold tracking-widest uppercase hidden group-hover:block transition-all">
+                    {isPlaying ? 'SOUND ON' : 'SOUND OFF'}
+                </span>
+
                 <button
                     onClick={togglePlay}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-95 ${isPlaying ? 'bg-gold/20 text-gold' : 'bg-white/5 text-white/50'}`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all active:scale-95 ${isPlaying ? 'text-gold' : 'text-white/40'}`}
                 >
-                    {isPlaying ? <Volume2 size={20} /> : <VolumeX size={20} />}
+                    {isPlaying ? <Volume2 size={18} /> : <VolumeX size={18} />}
                 </button>
 
-                {isPlaying && (
-                    <button
-                        onClick={nextTrack}
-                        className="w-8 h-8 rounded-full flex items-center justify-center text-white/50 hover:text-white transition-all"
-                    >
-                        <SkipForward size={16} />
-                    </button>
-                )}
+                <div className="w-px h-4 bg-white/10"></div>
+
+                <button
+                    onClick={nextTrack}
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-white/40 hover:text-white transition-all active:scale-95 active:rotate-180"
+                >
+                    <SkipForward size={16} />
+                </button>
             </div>
+
+            {/* Styles for Music Bars */}
+            <style>{`
+                @keyframes music-bar {
+                    0%, 100% { height: 30%; }
+                    50% { height: 100%; }
+                }
+                .animate-music-bar-1 { animation: music-bar 0.8s ease-in-out infinite; }
+                .animate-music-bar-2 { animation: music-bar 0.8s ease-in-out infinite 0.2s; }
+                .animate-music-bar-3 { animation: music-bar 0.8s ease-in-out infinite 0.4s; }
+            `}</style>
 
         </div>
     );
