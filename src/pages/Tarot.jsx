@@ -153,8 +153,14 @@ const Tarot = () => {
                             <Sparkles className="text-gold" size={20} />
                             The Oracle Speaks
                         </h3>
-                        <div className="prose prose-invert prose-sm md:prose-base max-w-none text-white/80 leading-relaxed">
-                            <div dangerouslySetInnerHTML={{ __html: reading.replace(/\*\*(.*?)\*\*/g, '<strong class="text-gold">$1</strong>').replace(/\n/g, '<br />') }} />
+                        <div className="text-gray-100 text-sm md:text-base leading-relaxed space-y-4">
+                            <div dangerouslySetInnerHTML={{
+                                __html: reading
+                                    .replace(/^### (.*$)/gim, '<h4 class="text-gold font-serif text-lg mt-4 mb-2">$1</h4>')
+                                    .replace(/^## (.*$)/gim, '<h3 class="text-gold font-serif text-xl mt-6 mb-3">$1</h3>')
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-gold font-semibold">$1</strong>')
+                                    .replace(/\n/g, '<br />')
+                            }} />
                         </div>
                         <button
                             onClick={() => { setDrawnCards([]); setShowDeck(false); setReading(null); }}
