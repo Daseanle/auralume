@@ -106,9 +106,21 @@ const Tarot = () => {
                                 <div
                                     key={idx}
                                     onClick={() => drawCard(card)}
-                                    className="aspect-[2/3] bg-gradient-to-br from-indigo-900 to-black border border-white/10 rounded-lg cursor-pointer hover:-translate-y-2 hover:border-gold/50 transition-all duration-300 flex items-center justify-center group"
+                                    className="aspect-[2/3] bg-[#1a0b2e] border-2 border-[#D4AF37]/40 rounded-lg cursor-pointer hover:-translate-y-2 hover:border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.4)] transition-all duration-300 flex items-center justify-center group relative overflow-hidden"
                                 >
-                                    <span className="opacity-0 group-hover:opacity-50 text-gold transition-opacity">✦</span>
+                                    {/* Card Back Pattern */}
+                                    <div className="absolute inset-1 border border-[#D4AF37]/20 rounded opacity-50"></div>
+                                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-purple-900/40 via-black to-black opacity-80"></div>
+
+                                    {/* Central Symbol */}
+                                    <div className="relative z-10 text-[#D4AF37]/40 group-hover:text-[#D4AF37] transition-colors duration-300 flex flex-col items-center gap-1">
+                                        <div className="w-6 h-6 border rotate-45 border-current flex items-center justify-center">
+                                            <div className="w-1.5 h-1.5 bg-current rounded-full"></div>
+                                        </div>
+                                    </div>
+
+                                    {/* Texture Overlay */}
+                                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-10 mix-blend-overlay"></div>
                                 </div>
                             )
                         ))}
