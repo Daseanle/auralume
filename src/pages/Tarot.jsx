@@ -78,14 +78,14 @@ const Tarot = () => {
 
                 {/* 2. SELECTION STATE: CARD GRID */}
                 {showDeck && drawnCards.length < 3 && (
-                    <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 w-full max-w-5xl px-4 pb-12">
+                    <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 w-full max-w-5xl px-4 pb-12 place-items-center">
                         {deck.map((card, idx) => (
                             !drawnCards.includes(card) && (
                                 <div
                                     key={idx}
                                     onClick={() => drawCard(card)}
-                                    // Image Container
-                                    className="aspect-[2/3] relative cursor-pointer hover:-translate-y-2 transition-all duration-200 group w-full rounded-lg overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.6)]"
+                                    // Image Container: Standardized Aspect Ratio & Max Width
+                                    className="aspect-[2/3.5] w-full max-w-[120px] relative cursor-pointer hover:-translate-y-2 transition-all duration-200 group rounded-lg overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.6)]"
                                 >
                                     <img
                                         src={CARD_BACK_IMAGE}
