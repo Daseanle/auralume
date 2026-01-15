@@ -1,0 +1,7 @@
+{
+  "name": "AuraLume",
+  "description": "AI-curated jewelry and cosmic guidance app featuring daily tarot readings, aura scanning, and astrological product matching.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

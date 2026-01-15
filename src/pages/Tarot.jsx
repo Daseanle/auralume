@@ -1,31 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, RefreshCcw } from 'lucide-react';
 import { generateTarotReading } from '../lib/gemini';
-
-const MAJOR_ARCANA = [
-    { name: "The Fool", icon: "🃏" },
-    { name: "The Magician", icon: "✨" },
-    { name: "The High Priestess", icon: "🌙" },
-    { name: "The Empress", icon: "👑" },
-    { name: "The Emperor", icon: "🏰" },
-    { name: "The Hierophant", icon: "🗝️" },
-    { name: "The Lovers", icon: "❤️" },
-    { name: "The Chariot", icon: "🎠" },
-    { name: "Strength", icon: "🦁" },
-    { name: "The Hermit", icon: "🕯️" },
-    { name: "Wheel of Fortune", icon: "🎡" },
-    { name: "Justice", icon: "⚖️" },
-    { name: "The Hanged Man", icon: "🙃" },
-    { name: "Death", icon: "💀" },
-    { name: "Temperance", icon: "🏺" },
-    { name: "The Devil", icon: "😈" },
-    { name: "The Tower", icon: "⚡" },
-    { name: "The Star", icon: "⭐" },
-    { name: "The Moon", icon: "🌚" },
-    { name: "The Sun", icon: "☀️" },
-    { name: "Judgement", icon: "🎺" },
-    { name: "The World", icon: "🌍" }
-];
+import { MAJOR_ARCANA, CARD_BACK_IMAGE } from '../lib/tarot-assets'; // Import new assets
 
 const Tarot = () => {
     const [deck, setDeck] = useState(MAJOR_ARCANA);
@@ -59,7 +35,9 @@ const Tarot = () => {
         // If 3 cards drawn, get reading automatically
         if (newDrawn.length === 3) {
             setIsLoadingReading(true);
-            const aiReading = await generateTarotReading(newDrawn);
+            // Pass simple names to Gemini, not the whole object
+            const cardNames = newDrawn.map(c => c.name);
+            const aiReading = await generateTarotReading(cardNames);
             setReading(aiReading);
             setIsLoadingReading(false);
         }
@@ -106,21 +84,14 @@ const Tarot = () => {
                                 <div
                                     key={idx}
                                     onClick={() => drawCard(card)}
-                                    // High contrast styling: Solid 2px border, brighter purple bg, white glow
-                                    className="aspect-[2/3] relative cursor-pointer hover:-translate-y-2 transition-all duration-200 group w-full"
+                                    // Image Container
+                                    className="aspect-[2/3] relative cursor-pointer hover:-translate-y-2 transition-all duration-200 group w-full rounded-lg overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.6)]"
                                 >
-                                    <div className="absolute inset-0 bg-purple-900/90 border-2 border-[#FFD700] rounded-lg shadow-[0_0_15px_rgba(255,215,0,0.6)] flex items-center justify-center overflow-hidden">
-
-                                        {/* Card Back decorative pattern (simplified for visibility) */}
-                                        <div className="w-full h-full opacity-30 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
-
-                                        {/* Center Emblem - Solid Gold */}
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <div className="w-8 h-8 rotate-45 border-2 border-[#FFD700] bg-[#FFD700]/20 flex items-center justify-center">
-                                                <div className="w-2 h-2 bg-[#FFD700] rotate-45"></div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <img
+                                        src={CARD_BACK_IMAGE}
+                                        alt="Tarot Card Back"
+                                        className="w-full h-full object-cover"
+                                    />
                                 </div>
                             )
                         ))}
@@ -129,11 +100,22 @@ const Tarot = () => {
 
                 {/* 3. RESULT STATE: 3 CARDS REVEALED */}
                 {drawnCards.length > 0 && (
-                    <div className="flex flex-wrap justify-center gap-4 mb-8 w-full">
+                    <div className="flex flex-wrap justify-center gap-6 mb-8 w-full px-4">
                         {drawnCards.map((card, idx) => (
-                            <div key={idx} className="w-24 h-40 md:w-32 md:h-52 bg-gradient-to-br from-black to-purple-900 border border-gold rounded-xl flex flex-col items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.2)] animate-flip-up" style={{ animationDelay: `${idx * 200}ms` }}>
-                                <div className="text-3xl mb-2">{card.icon}</div>
-                                <div className="text-xs md:text-sm text-center font-serif text-gold px-2">{card.name}</div>
+                            <div key={idx} className="w-28 md:w-40 aspect-[2/3.5] rounded-xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
+                                {/* Card Image */}
+                                <div className="w-full h-full rounded-lg overflow-hidden border-2 border-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-2 relative bg-black">
+                                    <img
+                                        src={card.image}
+                                        alt={card.name}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                                {/* Card Name Label */}
+                                <div className="text-center">
+                                    <h4 className="text-sm md:text-base font-serif text-[#D4AF37] font-bold">{card.name}</h4>
+                                    <p className="text-[10px] md:text-xs text-white/50 uppercase tracking-widest">{card.keywords.split(',')[0]}</p>
+                                </div>
                             </div>
                         ))}
                     </div>
