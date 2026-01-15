@@ -130,7 +130,7 @@ export const MAJOR_ARCANA = [
     {
         "name": "The World",
         "number": 21,
-        "image": "https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS_Tarot_21_World.jpg",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/a/a2/RWS_Tarot_21_World.jpg", // Verified direct URL
         "keywords": "Completion, integration, accomplishment, travel"
     }
 ];
