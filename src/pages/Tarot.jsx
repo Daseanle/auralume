@@ -100,27 +100,26 @@ const Tarot = () => {
 
                 {/* 2. SELECTION STATE: CARD GRID */}
                 {showDeck && drawnCards.length < 3 && (
-                    <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 animate-fade-in w-full max-w-5xl px-2">
+                    <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 w-full max-w-5xl px-4 pb-12">
                         {deck.map((card, idx) => (
                             !drawnCards.includes(card) && (
                                 <div
                                     key={idx}
                                     onClick={() => drawCard(card)}
-                                    // High contrast styling: Lighter background, solid border, glow effect
-                                    className="aspect-[2/3] relative cursor-pointer hover:-translate-y-2 transition-all duration-300 group"
+                                    // High contrast styling: Solid 2px border, brighter purple bg, white glow
+                                    className="aspect-[2/3] relative cursor-pointer hover:-translate-y-2 transition-all duration-200 group w-full"
                                 >
-                                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/30 to-purple-900/60 border border-[#D4AF37] rounded-lg shadow-[0_0_10px_rgba(212,175,55,0.2)] group-hover:shadow-[0_0_20px_rgba(212,175,55,0.6)] group-hover:border-[#D4AF37] flex items-center justify-center overflow-hidden backdrop-blur-sm bg-black/40">
+                                    <div className="absolute inset-0 bg-purple-900/90 border-2 border-[#FFD700] rounded-lg shadow-[0_0_15px_rgba(255,215,0,0.6)] flex items-center justify-center overflow-hidden">
 
-                                        {/* Inner Border */}
-                                        <div className="absolute inset-1 border border-[#D4AF37]/30 rounded opacity-60"></div>
+                                        {/* Card Back decorative pattern (simplified for visibility) */}
+                                        <div className="w-full h-full opacity-30 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
 
-                                        {/* Center Emblem - Brighter */}
-                                        <div className="w-8 h-8 rotate-45 border border-[#D4AF37]/60 flex items-center justify-center group-hover:scale-110 transition-transform bg-[#D4AF37]/10">
-                                            <div className="w-2 h-2 bg-[#D4AF37] rotate-45 shadow-[0_0_5px_#D4AF37]"></div>
+                                        {/* Center Emblem - Solid Gold */}
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            <div className="w-8 h-8 rotate-45 border-2 border-[#FFD700] bg-[#FFD700]/20 flex items-center justify-center">
+                                                <div className="w-2 h-2 bg-[#FFD700] rotate-45"></div>
+                                            </div>
                                         </div>
-
-                                        {/* Sparkle Icon to ensure visibility */}
-                                        <Sparkles className="absolute top-2 right-2 text-[#D4AF37]/60 w-3 h-3" />
                                     </div>
                                 </div>
                             )
