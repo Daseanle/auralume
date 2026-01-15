@@ -106,7 +106,7 @@ export const MAJOR_ARCANA = [
     {
         "name": "The Star",
         "number": 17,
-        "image": "https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg", // Verified direct URL
         "keywords": "Hope, faith, purpose, renewal, spirituality"
     },
     {
