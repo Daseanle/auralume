@@ -1,4 +1,4 @@
-export const CARD_BACK_IMAGE = "https://i.pinimg.com/736x/2a/87/3e/2a873e2cb5a8f2762e58a2d1d0a5198d.jpg"; // Cosmic/Mystical Back
+export const CARD_BACK_IMAGE = "https://lh3.googleusercontent.com/aida-public/AB6AXuCn-7deKA1nG8GOaCDJ-hwaCFow6_D1fuLPsQQdZYmbS9hlkko4bAVIF4ZV5_TWYo-gAqQ2kdfCf1UkATYuQxz7PQwEIXPD7F2SdYfjs-5KZfeWb1f03uw107KpYNR2kjEdVScnAimrVRE32CCEiaznVlzEJ2sLJmHYNFwrQgBoge8LcwcwRlw-GXLtjD_3R5KdVW9Fo8pn2dlgq_0sh97dYbP6vuVLWIMgf8GR6QMoRnLJv0bNTVQ0z5AoF7TREaio5uVka6VyLGY"; // Replaced with reliable CDN URL
 
 export const MAJOR_ARCANA = [
     {
