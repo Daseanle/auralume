@@ -118,7 +118,7 @@ export const MAJOR_ARCANA = [
     {
         "name": "The Sun",
         "number": 19,
-        "image": "https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg", // Verified direct URL
         "keywords": "Positivity, fun, warmth, success, vitality"
     },
     {
