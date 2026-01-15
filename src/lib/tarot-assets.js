@@ -40,7 +40,7 @@ export const MAJOR_ARCANA = [
     {
         "name": "The Lovers",
         "number": 6,
-        "image": "https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_06_Lovers.jpg", // Corrected hash d/db
+        "image": "/cards/lovers.jpg", // Hosted locally
         "keywords": "Love, harmony, relationships, choices"
     },
     {
