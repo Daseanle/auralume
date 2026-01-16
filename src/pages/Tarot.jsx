@@ -78,7 +78,7 @@ const Tarot = () => {
 
                 {/* 2. SELECTION STATE: CARD GRID */}
                 {showDeck && drawnCards.length < 3 && (
-                    <div className="flex flex-wrap justify-center gap-6 w-full max-w-5xl px-4 pb-12">
+                    <div className="flex flex-wrap justify-center gap-4 w-full max-w-5xl px-4 pb-12">
                         {deck.map((card, idx) => (
                             !drawnCards.includes(card) && (
                                 <div
