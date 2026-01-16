@@ -100,26 +100,29 @@ const Tarot = () => {
 
                 {/* 3. RESULT STATE: 3 CARDS REVEALED */}
                 {drawnCards.length > 0 && (
-                    <div className="flex flex-wrap justify-center gap-8 mb-10 w-full px-4">
-                        {drawnCards.map((card, idx) => (
-                            <div key={idx} className="flex-none w-56 md:w-72 min-w-[14rem] md:min-w-[18rem] aspect-[2/3.5] rounded-2xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
-                                {/* Card Image */}
-                                <div className="w-full h-full rounded-lg overflow-hidden border-2 border-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-2 relative bg-black">
-                                    <img
-                                        src={card.image}
-                                        alt={card.name}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </div>
-                                {/* Card Name Label */}
-                                <div className="text-center mt-3">
-                                    <h4 className="text-sm md:text-base font-serif text-[#D4AF37] font-bold">{card.name}</h4>
-                                    <p className="text-[10px] md:text-xs text-white/50 uppercase tracking-widest">{card.keywords.split(',')[0]}</p>
-                                </div>
+                    {
+                        drawnCards.length > 0 && (
+                            <div className="flex flex-nowrap overflow-x-auto gap-8 mb-10 w-full px-4 items-start justify-start md:justify-center no-scrollbar mask-gradient-x py-4">
+                                {drawnCards.map((card, idx) => (
+                                    <div key={idx} className="flex-none w-56 md:w-72 min-w-[14rem] md:min-w-[18rem] aspect-[2/3.5] rounded-2xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
+                                        {/* Card Image */}
+                                        <div className="w-full h-full rounded-lg overflow-hidden border-2 border-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-2 relative bg-black">
+                                            <img
+                                                src={card.image}
+                                                alt={card.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        </div>
+                                        {/* Card Name Label */}
+                                        <div className="text-center mt-3">
+                                            <h4 className="text-sm md:text-base font-serif text-[#D4AF37] font-bold">{card.name}</h4>
+                                            <p className="text-[10px] md:text-xs text-white/50 uppercase tracking-widest">{card.keywords.split(',')[0]}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-                )}
+                        )
+                    }
 
                 {/* 4. READING DISPLAY */}
                 {isLoadingReading && (
