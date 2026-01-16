@@ -76,16 +76,16 @@ const Tarot = () => {
                     </div>
                 )}
 
-                {/* 2. SELECTION STATE: CARD GRID */}
+                {/* 2. SELECTION STATE: CARD GRID (Horizontal Scroll) */}
                 {showDeck && drawnCards.length < 3 && (
-                    <div className="flex flex-wrap justify-center gap-4 w-full max-w-5xl px-4 pb-12">
+                    <div className="flex flex-nowrap overflow-x-auto gap-4 w-full max-w-5xl px-4 pb-8 items-center justify-start md:justify-center no-scrollbar mask-gradient-x">
                         {deck.map((card, idx) => (
                             !drawnCards.includes(card) && (
                                 <div
                                     key={idx}
                                     onClick={() => drawCard(card)}
-                                    // SIZE: w-28 md:w-36, shrink-0 to prevent squishing
-                                    className="w-28 md:w-36 shrink-0 aspect-[2/3.5] relative cursor-pointer hover:-translate-y-2 transition-all duration-200 group rounded-lg overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.6)]"
+                                    // SIZE: w-32 md:w-48 (Larger, Uniform)
+                                    className="w-32 md:w-48 shrink-0 aspect-[2/3.5] relative cursor-pointer hover:-translate-y-4 transition-all duration-300 group rounded-lg overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)]"
                                 >
                                     <img
                                         src={CARD_BACK_IMAGE}
@@ -102,7 +102,7 @@ const Tarot = () => {
                 {drawnCards.length > 0 && (
                     <div className="flex flex-wrap justify-center gap-6 mb-8 w-full px-4">
                         {drawnCards.map((card, idx) => (
-                            <div key={idx} className="w-28 md:w-36 aspect-[2/3.5] rounded-xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
+                            <div key={idx} className="w-32 md:w-48 shrink-0 aspect-[2/3.5] rounded-xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
                                 {/* Card Image */}
                                 <div className="w-full h-full rounded-lg overflow-hidden border-2 border-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-2 relative bg-black">
                                     <img
