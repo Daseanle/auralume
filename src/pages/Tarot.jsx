@@ -100,59 +100,64 @@ const Tarot = () => {
 
                 {/* 3. RESULT STATE: 3 CARDS REVEALED */}
                 {drawnCards.length > 0 && (
-                    alt = { card.name }
-                                                className="w-full h-full object-cover"
-                                            />
-            </div>
-            {/* Card Name Label */}
-            <div className="text-center mt-3">
-                <h4 className="text-sm md:text-base font-serif text-[#D4AF37] font-bold">{card.name}</h4>
-                <p className="text-[10px] md:text-xs text-white/50 uppercase tracking-widest">{card.keywords.split(',')[0]}</p>
-            </div>
-        </div>
-    ))
-}
-                            </div >
-                        )
-                    }
+                    <div className="flex flex-nowrap overflow-x-auto gap-8 mb-10 w-full px-4 items-start justify-start md:justify-center no-scrollbar mask-gradient-x py-4">
+                        {drawnCards.map((card, idx) => (
+                            <div key={idx} className="flex-none w-56 md:w-72 min-w-[14rem] md:min-w-[18rem] aspect-[2/3.5] rounded-2xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
+                                {/* Card Image */}
+                                <div className="w-full h-full rounded-lg overflow-hidden border-2 border-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-2 relative bg-black">
+                                    <img
+                                        src={card.image}
+                                        alt={card.name}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                                {/* Card Name Label */}
+                                <div className="text-center mt-3">
+                                    <h4 className="text-sm md:text-base font-serif text-[#D4AF37] font-bold">{card.name}</h4>
+                                    <p className="text-[10px] md:text-xs text-white/50 uppercase tracking-widest">{card.keywords.split(',')[0]}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
 
-{/* 4. READING DISPLAY */ }
-{
-    isLoadingReading && (
-        <div className="flex flex-col items-center gap-3 animate-fade-in mt-8">
-            <Sparkles className="text-gold animate-spin" />
-            <p className="text-white/50 text-sm italic">Consulting the oracle...</p>
-        </div>
-    )
-}
+                {/* 4. READING DISPLAY */}
+                {
+                    isLoadingReading && (
+                        <div className="flex flex-col items-center gap-3 animate-fade-in mt-8">
+                            <Sparkles className="text-gold animate-spin" />
+                            <p className="text-white/50 text-sm italic">Consulting the oracle...</p>
+                        </div>
+                    )
+                }
 
-{
-    reading && !isLoadingReading && (
-        <div className="glass-panel w-full max-w-3xl p-6 md:p-10 animate-fade-in mt-4 border border-white/10">
-            <h3 className="text-2xl font-serif text-gold mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
-                <Sparkles className="text-gold" size={24} />
-                The Oracle Speaks
-            </h3>
-            <div className="text-gray-100 text-base md:text-lg leading-relaxed space-y-4">
-                <div dangerouslySetInnerHTML={{
-                    __html: reading
-                        .replace(/^### (.*$)/gim, '<h4 class="text-gold font-serif text-lg mt-6 mb-2">$1</h4>')
-                        .replace(/^## (.*$)/gim, '<h3 class="text-gold font-serif text-xl mt-8 mb-4">$1</h3>')
-                        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
-                        .replace(/\n/g, '<br />')
-                }} />
-            </div>
-            <div className="mt-8 flex justify-center">
-                <button
-                    onClick={() => { setDrawnCards([]); setShowDeck(false); setReading(null); }}
-                    className="px-10 py-3 bg-gradient-to-r from-[#FFD700] via-[#D4AF37] to-[#B8860B] text-black font-bold text-lg uppercase tracking-widest rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_25px_rgba(212,175,55,0.6)] border border-[#FFE578]"
-                >
-                    Read Again
-                </button>
-            </div>
-        </div>
-    )
-}
+                {
+                    reading && !isLoadingReading && (
+                        <div className="glass-panel w-full max-w-3xl p-6 md:p-10 animate-fade-in mt-4 border border-white/10">
+                            <h3 className="text-2xl font-serif text-gold mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
+                                <Sparkles className="text-gold" size={24} />
+                                The Oracle Speaks
+                            </h3>
+                            <div className="text-gray-100 text-base md:text-lg leading-relaxed space-y-4">
+                                <div dangerouslySetInnerHTML={{
+                                    __html: reading
+                                        .replace(/^### (.*$)/gim, '<h4 class="text-gold font-serif text-lg mt-6 mb-2">$1</h4>')
+                                        .replace(/^## (.*$)/gim, '<h3 class="text-gold font-serif text-xl mt-8 mb-4">$1</h3>')
+                                        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+                                        .replace(/\n/g, '<br />')
+                                }} />
+                            </div>
+                            <div className="mt-8 flex justify-center">
+                                <button
+                                    onClick={() => { setDrawnCards([]); setShowDeck(false); setReading(null); }}
+                                    className="px-10 py-3 bg-gradient-to-r from-[#FFD700] via-[#D4AF37] to-[#B8860B] text-black font-bold text-lg uppercase tracking-widest rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_25px_rgba(212,175,55,0.6)] border border-[#FFE578]"
+                                >
+                                    Read Again
+                                </button>
+                            </div>
+                        </div>
+                    )
+                }
 
             </div >
         </div >
