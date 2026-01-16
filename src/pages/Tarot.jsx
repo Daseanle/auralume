@@ -147,7 +147,7 @@ const Tarot = () => {
                         <div className="mt-8 flex justify-center">
                             <button
                                 onClick={() => { setDrawnCards([]); setShowDeck(false); setReading(null); }}
-                                className="px-8 py-3 bg-gradient-to-r from-[#D4AF37] to-[#B4941F] text-black font-bold uppercase tracking-widest rounded-full hover:scale-105 transition-transform shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+                                className="px-10 py-3 bg-gradient-to-r from-[#FFD700] via-[#D4AF37] to-[#B8860B] text-black font-bold text-lg uppercase tracking-widest rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_25px_rgba(212,175,55,0.6)] border border-[#FFE578]"
                             >
                                 Read Again
                             </button>
