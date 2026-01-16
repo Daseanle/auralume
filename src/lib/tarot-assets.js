@@ -1,4 +1,4 @@
-export const CARD_BACK_IMAGE = "/cards/card_back_v2.jpg"; // New aesthetic back
+export const CARD_BACK_IMAGE = "/cards/premium_back.png"; // Premium generated back
 
 export const MAJOR_ARCANA = [
     {
