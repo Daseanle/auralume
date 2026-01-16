@@ -78,14 +78,14 @@ const Tarot = () => {
 
                 {/* 2. SELECTION STATE: CARD GRID (Horizontal Scroll) */}
                 {showDeck && drawnCards.length < 3 && (
-                    <div className="flex flex-nowrap overflow-x-auto gap-4 w-full max-w-7xl px-4 py-8 items-center justify-start md:justify-center no-scrollbar mask-gradient-x">
+                    <div className="flex flex-nowrap overflow-x-auto gap-4 w-full max-w-7xl px-4 py-8 items-center justify-start no-scrollbar mask-gradient-x">
                         {deck.map((card, idx) => (
                             !drawnCards.includes(card) && (
                                 <div
                                     key={idx}
                                     onClick={() => drawCard(card)}
-                                    // SIZE: w-48 md:w-64 (Maximum Visibility)
-                                    className="flex-none w-48 md:w-64 aspect-[2/3.5] relative cursor-pointer hover:-translate-y-6 transition-all duration-300 group rounded-2xl overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_30px_rgba(212,175,55,0.8)]"
+                                    // SIZE: w-48 md:w-64 with explicit min-w to prevent shrinking
+                                    className="flex-none w-48 md:w-64 min-w-[12rem] md:min-w-[16rem] aspect-[2/3.5] relative cursor-pointer hover:-translate-y-6 transition-all duration-300 group rounded-2xl overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_30px_rgba(212,175,55,0.8)]"
                                 >
                                     <img
                                         src={CARD_BACK_IMAGE}
