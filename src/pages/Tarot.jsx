@@ -78,21 +78,21 @@ const Tarot = () => {
 
                 {/* 2. SELECTION STATE: CARD GRID (Horizontal Scroll) */}
                 {/* 2. SELECTION STATE: CARD GRID (Responsive Grid) */}
-                {/* 2. SELECTION STATE: CARD GRID (Responsive Grid) */}
+                {/* 2. SELECTION STATE: CARD GRID (Dense Grid) */}
                 {showDeck && drawnCards.length < 3 && (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-6 w-full max-w-5xl px-4 pb-12 mx-auto animate-fade-in">
+                    <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-2 md:gap-4 w-full max-w-6xl px-2 pb-12 mx-auto animate-fade-in">
                         {deck.map((card, idx) => (
                             !drawnCards.includes(card) && (
                                 <div
                                     key={idx}
                                     onClick={() => drawCard(card)}
-                                    // SIZE: Responsive Grid (Fills screen)
-                                    className="w-full aspect-[2/3.5] relative cursor-pointer hover:-translate-y-2 transition-all duration-200 group rounded-xl overflow-hidden border border-white/10 hover:border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.5)]"
+                                    // SIZE: Dense Grid (Fits in ~1 page), Image Scaled to remove border
+                                    className="w-full aspect-[2/3.5] relative cursor-pointer hover:-translate-y-1 transition-all duration-200 group rounded-lg overflow-hidden border border-white/5 hover:border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.5)]"
                                 >
                                     <img
                                         src={CARD_BACK_IMAGE}
                                         alt="Tarot Card Back"
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover transform scale-[1.2]"
                                     />
                                 </div>
                             )
