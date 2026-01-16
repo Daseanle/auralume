@@ -78,14 +78,14 @@ const Tarot = () => {
 
                 {/* 2. SELECTION STATE: CARD GRID (Horizontal Scroll) */}
                 {showDeck && drawnCards.length < 3 && (
-                    <div className="flex flex-nowrap overflow-x-auto gap-4 w-full max-w-7xl px-4 py-8 items-center justify-start no-scrollbar mask-gradient-x">
+                    <div className="flex flex-nowrap overflow-x-auto gap-6 w-full max-w-7xl px-4 py-12 items-center justify-start no-scrollbar mask-gradient-x">
                         {deck.map((card, idx) => (
                             !drawnCards.includes(card) && (
                                 <div
                                     key={idx}
                                     onClick={() => drawCard(card)}
-                                    // SIZE: w-48 md:w-64 with explicit min-w to prevent shrinking
-                                    className="flex-none w-48 md:w-64 min-w-[12rem] md:min-w-[16rem] aspect-[2/3.5] relative cursor-pointer hover:-translate-y-6 transition-all duration-300 group rounded-2xl overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_30px_rgba(212,175,55,0.8)]"
+                                    // SIZE: w-56 md:w-72 (MASSIVE & UN-SQUISHABLE)
+                                    className="flex-none w-56 md:w-72 min-w-[14rem] md:min-w-[18rem] aspect-[2/3.5] relative cursor-pointer hover:-translate-y-6 transition-all duration-300 group rounded-2xl overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_35px_rgba(212,175,55,0.8)]"
                                 >
                                     <img
                                         src={CARD_BACK_IMAGE}
@@ -102,7 +102,7 @@ const Tarot = () => {
                 {drawnCards.length > 0 && (
                     <div className="flex flex-wrap justify-center gap-8 mb-10 w-full px-4">
                         {drawnCards.map((card, idx) => (
-                            <div key={idx} className="flex-none w-48 md:w-64 min-w-[12rem] md:min-w-[16rem] aspect-[2/3.5] rounded-2xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
+                            <div key={idx} className="flex-none w-56 md:w-72 min-w-[14rem] md:min-w-[18rem] aspect-[2/3.5] rounded-2xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
                                 {/* Card Image */}
                                 <div className="w-full h-full rounded-lg overflow-hidden border-2 border-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-2 relative bg-black">
                                     <img
