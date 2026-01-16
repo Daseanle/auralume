@@ -102,7 +102,7 @@ const Tarot = () => {
                 {drawnCards.length > 0 && (
                     <div className="flex flex-wrap justify-center gap-6 mb-8 w-full px-4">
                         {drawnCards.map((card, idx) => (
-                            <div key={idx} className="w-32 md:w-48 shrink-0 aspect-[2/3.5] rounded-xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
+                            <div key={idx} className="flex-none w-32 md:w-48 min-w-[8rem] md:min-w-[12rem] aspect-[2/3.5] rounded-xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
                                 {/* Card Image */}
                                 <div className="w-full h-full rounded-lg overflow-hidden border-2 border-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-2 relative bg-black">
                                     <img
