@@ -78,14 +78,14 @@ const Tarot = () => {
 
                 {/* 2. SELECTION STATE: CARD GRID */}
                 {showDeck && drawnCards.length < 3 && (
-                    <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 w-full max-w-5xl px-4 pb-12 place-items-center">
+                    <div className="flex flex-wrap justify-center gap-4 w-full max-w-5xl px-4 pb-12">
                         {deck.map((card, idx) => (
                             !drawnCards.includes(card) && (
                                 <div
                                     key={idx}
                                     onClick={() => drawCard(card)}
-                                    // Image Container: Standardized Aspect Ratio & Max Width
-                                    className="aspect-[2/3.5] w-full max-w-[120px] relative cursor-pointer hover:-translate-y-2 transition-all duration-200 group rounded-lg overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.6)]"
+                                    // SIZE: w-28 md:w-36 (Uniform with Result)
+                                    className="w-28 md:w-36 aspect-[2/3.5] relative cursor-pointer hover:-translate-y-2 transition-all duration-200 group rounded-lg overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.6)]"
                                 >
                                     <img
                                         src={CARD_BACK_IMAGE}
@@ -102,7 +102,7 @@ const Tarot = () => {
                 {drawnCards.length > 0 && (
                     <div className="flex flex-wrap justify-center gap-6 mb-8 w-full px-4">
                         {drawnCards.map((card, idx) => (
-                            <div key={idx} className="w-28 md:w-40 aspect-[2/3.5] rounded-xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
+                            <div key={idx} className="w-28 md:w-36 aspect-[2/3.5] rounded-xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
                                 {/* Card Image */}
                                 <div className="w-full h-full rounded-lg overflow-hidden border-2 border-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-2 relative bg-black">
                                     <img
@@ -113,7 +113,7 @@ const Tarot = () => {
                                 </div>
                                 {/* Card Name Label */}
                                 <div className="text-center">
-                                    <h4 className="text-sm md:text-base font-serif text-[#D4AF37] font-bold">{card.name}</h4>
+                                    <h4 className="text-xs md:text-sm font-serif text-[#D4AF37] font-bold">{card.name}</h4>
                                     <p className="text-[10px] md:text-xs text-white/50 uppercase tracking-widest">{card.keywords.split(',')[0]}</p>
                                 </div>
                             </div>

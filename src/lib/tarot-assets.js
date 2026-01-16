@@ -1,4 +1,4 @@
-export const CARD_BACK_IMAGE = "https://lh3.googleusercontent.com/aida-public/AB6AXuCn-7deKA1nG8GOaCDJ-hwaCFow6_D1fuLPsQQdZYmbS9hlkko4bAVIF4ZV5_TWYo-gAqQ2kdfCf1UkATYuQxz7PQwEIXPD7F2SdYfjs-5KZfeWb1f03uw107KpYNR2kjEdVScnAimrVRE32CCEiaznVlzEJ2sLJmHYNFwrQgBoge8LcwcwRlw-GXLtjD_3R5KdVW9Fo8pn2dlgq_0sh97dYbP6vuVLWIMgf8GR6QMoRnLJv0bNTVQ0z5AoF7TREaio5uVka6VyLGY"; // Replaced with reliable CDN URL
+export const CARD_BACK_IMAGE = "/cards/card_back_v2.jpg"; // New aesthetic back
 
 export const MAJOR_ARCANA = [
     {
@@ -106,7 +106,7 @@ export const MAJOR_ARCANA = [
     {
         "name": "The Star",
         "number": 17,
-        "image": "https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_17_Star.jpg", // Verified direct URL
+        "image": "/cards/star.jpg", // Hosted locally
         "keywords": "Hope, faith, purpose, renewal, spirituality"
     },
     {
@@ -118,7 +118,7 @@ export const MAJOR_ARCANA = [
     {
         "name": "The Sun",
         "number": 19,
-        "image": "https://upload.wikimedia.org/wikipedia/commons/b/be/RWS_Tarot_19_Sun.jpg", // Corrected hash
+        "image": "/cards/sun.jpg", // Hosted locally
         "keywords": "Positivity, fun, warmth, success, vitality"
     },
     {
