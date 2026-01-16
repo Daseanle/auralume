@@ -78,6 +78,7 @@ const Tarot = () => {
 
                 {/* 2. SELECTION STATE: CARD GRID (Horizontal Scroll) */}
                 {/* 2. SELECTION STATE: CARD GRID (Responsive Grid) */}
+                {/* 2. SELECTION STATE: CARD GRID (Responsive Grid) */}
                 {showDeck && drawnCards.length < 3 && (
                     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-6 w-full max-w-5xl px-4 pb-12 mx-auto animate-fade-in">
                         {deck.map((card, idx) => (
