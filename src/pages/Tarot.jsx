@@ -77,15 +77,16 @@ const Tarot = () => {
                 )}
 
                 {/* 2. SELECTION STATE: CARD GRID (Horizontal Scroll) */}
+                {/* 2. SELECTION STATE: CARD GRID (Responsive Grid) */}
                 {showDeck && drawnCards.length < 3 && (
-                    <div className="flex flex-nowrap overflow-x-auto gap-6 w-full max-w-7xl px-4 py-12 items-center justify-start no-scrollbar mask-gradient-x">
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 md:gap-6 w-full max-w-5xl px-4 pb-12 mx-auto animate-fade-in">
                         {deck.map((card, idx) => (
                             !drawnCards.includes(card) && (
                                 <div
                                     key={idx}
                                     onClick={() => drawCard(card)}
-                                    // SIZE: w-56 md:w-72 (MASSIVE & UN-SQUISHABLE)
-                                    className="flex-none w-56 md:w-72 min-w-[14rem] md:min-w-[18rem] aspect-[2/3.5] relative cursor-pointer hover:-translate-y-6 transition-all duration-300 group rounded-2xl overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_35px_rgba(212,175,55,0.8)]"
+                                    // SIZE: Responsive Grid (Fills screen)
+                                    className="w-full aspect-[2/3.5] relative cursor-pointer hover:-translate-y-2 transition-all duration-200 group rounded-xl overflow-hidden border border-white/10 hover:border-[#D4AF37] hover:shadow-[0_0_15px_rgba(212,175,55,0.5)]"
                                 >
                                     <img
                                         src={CARD_BACK_IMAGE}
