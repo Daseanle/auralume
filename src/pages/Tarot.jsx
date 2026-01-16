@@ -78,14 +78,14 @@ const Tarot = () => {
 
                 {/* 2. SELECTION STATE: CARD GRID (Horizontal Scroll) */}
                 {showDeck && drawnCards.length < 3 && (
-                    <div className="flex flex-nowrap overflow-x-auto gap-4 w-full max-w-5xl px-4 pb-8 items-center justify-start md:justify-center no-scrollbar mask-gradient-x">
+                    <div className="flex flex-nowrap overflow-x-auto gap-6 w-full max-w-6xl px-4 pb-10 items-center justify-start md:justify-center no-scrollbar mask-gradient-x">
                         {deck.map((card, idx) => (
                             !drawnCards.includes(card) && (
                                 <div
                                     key={idx}
                                     onClick={() => drawCard(card)}
-                                    // SIZE: w-32 md:w-48 (Larger, Uniform)
-                                    className="w-32 md:w-48 shrink-0 aspect-[2/3.5] relative cursor-pointer hover:-translate-y-4 transition-all duration-300 group rounded-lg overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)]"
+                                    // SIZE: w-40 md:w-56 (Significantly Larger)
+                                    className="flex-none w-40 md:w-56 aspect-[2/3.5] relative cursor-pointer hover:-translate-y-4 transition-all duration-300 group rounded-xl overflow-hidden border-2 border-transparent hover:border-[#D4AF37] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)]"
                                 >
                                     <img
                                         src={CARD_BACK_IMAGE}
@@ -102,7 +102,7 @@ const Tarot = () => {
                 {drawnCards.length > 0 && (
                     <div className="flex flex-wrap justify-center gap-6 mb-8 w-full px-4">
                         {drawnCards.map((card, idx) => (
-                            <div key={idx} className="flex-none w-32 md:w-48 min-w-[8rem] md:min-w-[12rem] aspect-[2/3.5] rounded-xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
+                            <div key={idx} className="flex-none w-40 md:w-56 min-w-[10rem] md:min-w-[14rem] aspect-[2/3.5] rounded-xl flex flex-col items-center justify-start animate-flip-up relative group" style={{ animationDelay: `${idx * 200}ms` }}>
                                 {/* Card Image */}
                                 <div className="w-full h-full rounded-lg overflow-hidden border-2 border-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.3)] mb-2 relative bg-black">
                                     <img
@@ -112,8 +112,8 @@ const Tarot = () => {
                                     />
                                 </div>
                                 {/* Card Name Label */}
-                                <div className="text-center">
-                                    <h4 className="text-xs md:text-sm font-serif text-[#D4AF37] font-bold">{card.name}</h4>
+                                <div className="text-center mt-3">
+                                    <h4 className="text-sm md:text-base font-serif text-[#D4AF37] font-bold">{card.name}</h4>
                                     <p className="text-[10px] md:text-xs text-white/50 uppercase tracking-widest">{card.keywords.split(',')[0]}</p>
                                 </div>
                             </div>
@@ -130,26 +130,28 @@ const Tarot = () => {
                 )}
 
                 {reading && !isLoadingReading && (
-                    <div className="glass-panel w-full max-w-2xl p-6 md:p-8 animate-fade-in mt-4">
-                        <h3 className="text-xl font-serif text-white mb-4 flex items-center gap-2">
-                            <Sparkles className="text-gold" size={20} />
+                    <div className="glass-panel w-full max-w-3xl p-6 md:p-10 animate-fade-in mt-4 border border-white/10">
+                        <h3 className="text-2xl font-serif text-gold mb-6 flex items-center gap-3 border-b border-white/10 pb-4">
+                            <Sparkles className="text-gold" size={24} />
                             The Oracle Speaks
                         </h3>
-                        <div className="text-gray-100 text-sm md:text-base leading-relaxed space-y-4">
+                        <div className="text-gray-100 text-base md:text-lg leading-relaxed space-y-4">
                             <div dangerouslySetInnerHTML={{
                                 __html: reading
-                                    .replace(/^### (.*$)/gim, '<h4 class="text-gold font-serif text-lg mt-4 mb-2">$1</h4>')
-                                    .replace(/^## (.*$)/gim, '<h3 class="text-gold font-serif text-xl mt-6 mb-3">$1</h3>')
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-gold font-semibold">$1</strong>')
+                                    .replace(/^### (.*$)/gim, '<h4 class="text-gold font-serif text-lg mt-6 mb-2">$1</h4>')
+                                    .replace(/^## (.*$)/gim, '<h3 class="text-gold font-serif text-xl mt-8 mb-4">$1</h3>')
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
                                     .replace(/\n/g, '<br />')
                             }} />
                         </div>
-                        <button
-                            onClick={() => { setDrawnCards([]); setShowDeck(false); setReading(null); }}
-                            className="mt-6 text-xs text-white/40 hover:text-white underline"
-                        >
-                            Read Again
-                        </button>
+                        <div className="mt-8 flex justify-center">
+                            <button
+                                onClick={() => { setDrawnCards([]); setShowDeck(false); setReading(null); }}
+                                className="px-8 py-3 bg-gradient-to-r from-[#D4AF37] to-[#B4941F] text-black font-bold uppercase tracking-widest rounded-full hover:scale-105 transition-transform shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+                            >
+                                Read Again
+                            </button>
+                        </div>
                     </div>
                 )}
 
